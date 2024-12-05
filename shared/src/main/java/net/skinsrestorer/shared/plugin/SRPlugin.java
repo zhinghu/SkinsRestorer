@@ -334,10 +334,10 @@ public class SRPlugin {
 
         platformInit.prePlatformInit();
 
-        if (serverPlugin != null) {
-            serverPlugin.startupPlatform((SRServerPlatformInit) platformInit);
-        } else if (proxyPlugin != null) {
-            proxyPlugin.startupPlatform((SRProxyPlatformInit) platformInit);
+        if (serverPlugin instanceof SRServerPlatformInit serverPlatformInit) {
+            serverPlugin.startupPlatform(serverPlatformInit);
+        } else if (proxyPlugin instanceof SRProxyPlatformInit proxyPlatformInit) {
+            proxyPlugin.startupPlatform(proxyPlatformInit);
         } else {
             throw new IllegalStateException("No platform class available!");
         }

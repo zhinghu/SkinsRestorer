@@ -31,6 +31,7 @@ import net.skinsrestorer.bukkit.utils.SkinApplyBukkitAdapter;
 import net.skinsrestorer.bukkit.v1_7.BukkitLegacyPropertyApplier;
 import net.skinsrestorer.bukkit.wrapper.WrapperBukkit;
 import net.skinsrestorer.shared.config.AdvancedConfig;
+import net.skinsrestorer.shared.hooks.SRMiniPlaceholdersAPIExpansion;
 import net.skinsrestorer.shared.info.ClassInfo;
 import net.skinsrestorer.shared.info.PluginInfo;
 import net.skinsrestorer.shared.log.SRChatColor;
@@ -305,6 +306,15 @@ public class SRBukkitInit implements SRServerPlatformInit {
                     injector
             ).register();
             logger.info("PlaceholderAPI expansion registered!");
+        }
+
+        if (adapter.getPluginInfo("MiniPlaceholders").isPresent()) {
+            new SRMiniPlaceholdersAPIExpansion<>(
+                    audience -> audience instanceof Player,
+                    wrapper::player,
+                    p -> injector.getSingleton(SkinApplyBukkitAdapter.class).getSkinProperty(p.getAs(Player.class))
+            ).register();
+            logger.info("MiniPlaceholders expansion registered!");
         }
     }
 }

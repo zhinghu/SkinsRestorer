@@ -34,6 +34,8 @@ dependencies {
         isTransitive = false
     }
 
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
+
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
 
     testImplementation("org.bstats:bstats-base:3.1.0")
