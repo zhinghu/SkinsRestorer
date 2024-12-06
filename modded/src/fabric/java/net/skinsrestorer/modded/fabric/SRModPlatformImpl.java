@@ -18,6 +18,7 @@
 package net.skinsrestorer.modded.fabric;
 
 import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.skinsrestorer.modded.SRModPlatform;
@@ -31,6 +32,8 @@ import org.incendo.cloud.fabric.FabricServerCommandManager;
 
 @SuppressWarnings("unused")
 public class SRModPlatformImpl implements SRModPlatform {
+    private static final boolean HAS_PERMISSIONS_API = FabricLoader.getInstance().isModLoaded("fabric-permissions-api-v0");
+
     @Override
     public String getPlatformName() {
         return "Fabric";
@@ -44,11 +47,15 @@ public class SRModPlatformImpl implements SRModPlatform {
 
     @Override
     public Tristate test(CommandSourceStack stack, Permission permission) {
-        return switch (Permissions.getPermissionValue(stack, permission.getPermissionString())) {
-            case TRUE -> Tristate.TRUE;
-            case FALSE -> Tristate.FALSE;
-            case DEFAULT -> Tristate.UNDEFINED;
-        };
+        if (HAS_PERMISSIONS_API) {
+            return switch (Permissions.getPermissionValue(stack, permission.getPermissionString())) {
+                case TRUE -> Tristate.TRUE;
+                case FALSE -> Tristate.FALSE;
+                case DEFAULT -> Tristate.UNDEFINED;
+            };
+        }
+
+        return stack.hasPermission(stack.getServer().getOperatorUserPermissionLevel()) ? Tristate.TRUE : Tristate.UNDEFINED;
     }
 
     @Override

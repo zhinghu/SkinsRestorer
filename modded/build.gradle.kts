@@ -91,6 +91,7 @@ dependencies {
     fabricModImplementation(fabricApi.fabric("0.100.7+1.21"))
     fabricModImplementation("dev.architectury:architectury-fabric:14.0.4")
     fabricModImplementation("org.incendo:cloud-fabric:2.0.0-SNAPSHOT")
+    fabricModImplementation("me.lucko:fabric-permissions-api:0.3.3")
 
     neoforgeModImplementation("dev.architectury:architectury-neoforge:14.0.4")
     neoforgeModImplementation("org.incendo:cloud-neoforge:2.0.0-SNAPSHOT")
