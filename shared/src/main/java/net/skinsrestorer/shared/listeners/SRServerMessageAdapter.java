@@ -18,9 +18,11 @@
 package net.skinsrestorer.shared.listeners;
 
 import lombok.RequiredArgsConstructor;
+import net.skinsrestorer.api.property.SkinProperty;
 import net.skinsrestorer.shared.api.SharedSkinApplier;
 import net.skinsrestorer.shared.codec.SRInputReader;
 import net.skinsrestorer.shared.codec.SRServerPluginMessage;
+import net.skinsrestorer.shared.gui.SRInventory;
 import net.skinsrestorer.shared.listeners.event.SRServerMessageEvent;
 import net.skinsrestorer.shared.plugin.SRServerAdapter;
 import net.skinsrestorer.shared.utils.SRHelpers;
@@ -40,10 +42,10 @@ public final class SRServerMessageAdapter {
         serverAdapter.runAsync(() -> {
             SRServerPluginMessage message = SRServerPluginMessage.CODEC.read(new SRInputReader(event.getData()));
             SRServerPluginMessage.ChannelPayload<?> channelPayload = message.channelPayload();
-            if (channelPayload instanceof SRServerPluginMessage.GUIPageChannelPayload payload) {
-                serverAdapter.openGUI(event.getPlayer(), payload.srInventory());
-            } else if (channelPayload instanceof SRServerPluginMessage.SkinUpdateChannelPayload payload) {
-                skinApplier.applySkin(event.getPlayer().getAs(Object.class), payload.skinProperty());
+            if (channelPayload instanceof SRServerPluginMessage.GUIPageChannelPayload(SRInventory srInventory)) {
+                serverAdapter.openGUI(event.getPlayer(), srInventory);
+            } else if (channelPayload instanceof SRServerPluginMessage.SkinUpdateChannelPayload(SkinProperty skinProperty)) {
+                skinApplier.applySkin(event.getPlayer().getAs(Object.class), skinProperty);
             }
         });
     }

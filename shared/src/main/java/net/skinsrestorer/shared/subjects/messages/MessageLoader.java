@@ -50,7 +50,7 @@ public class MessageLoader {
         manager.verifyValid();
     }
 
-    private void loadDefaultMessages() throws IOException {
+    private void loadDefaultMessages() {
         for (String localeFile : BuildData.LOCALES) {
             String resourcePath = "locales/%s".formatted(localeFile);
             Locale locale = getTranslationLocale(localeFile);
