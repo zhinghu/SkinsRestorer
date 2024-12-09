@@ -20,7 +20,6 @@ package net.skinsrestorer.shared.hooks;
 import io.github.miniplaceholders.api.Expansion;
 import io.github.miniplaceholders.api.utils.TagsUtils;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.skinsrestorer.api.PropertyUtils;
 import net.skinsrestorer.api.SkinsRestorerProvider;
@@ -38,7 +37,7 @@ import java.util.function.Predicate;
 public class SRMiniPlaceholdersAPIExpansion<P> {
     public static final SkinProperty STEVE_PROPERTY = HardcodedSkins.getHardcodedSkin("steve").orElseThrow().getProperty();
     public static final SkinProperty ALEX_PROPERTY = HardcodedSkins.getHardcodedSkin("alex").orElseThrow().getProperty();
-    private final Predicate<Audience> playerPredicate;
+    private final Predicate<Object> playerPredicate;
     private final Function<P, SRPlayer> playerProvider;
     private final Function<SRPlayer, Optional<SkinProperty>> propertyProvider;
 
@@ -46,7 +45,7 @@ public class SRMiniPlaceholdersAPIExpansion<P> {
     public void register() {
         Expansion.Builder builder = Expansion.builder("skinsrestorer");
 
-        builder.filter(playerPredicate);
+        builder.filter(playerPredicate::test);
         builder.audiencePlaceholder("skin_name_or_empty", ((audience, queue, ctx) -> {
             SRPlayer player = playerProvider.apply((P) audience);
 
