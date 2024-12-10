@@ -70,9 +70,9 @@ public class SRVelocityInit implements SRProxyPlatformInit {
     public void placeholderSetupHook() {
         if (adapter.getPluginInfo("miniplaceholders").isPresent()) {
             new SRMiniPlaceholdersAPIExpansion<>(
+                    adapter,
                     audience -> audience instanceof Player,
-                    wrapper::player,
-                    p -> injector.getSingleton(SkinApplierVelocity.class).getSkinProperty(p.getAs(Player.class))
+                    wrapper::player
             ).register();
             logger.info("MiniPlaceholders expansion registered!");
         }

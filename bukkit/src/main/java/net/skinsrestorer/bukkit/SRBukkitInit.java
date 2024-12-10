@@ -310,9 +310,9 @@ public class SRBukkitInit implements SRServerPlatformInit {
 
         if (adapter.getPluginInfo("MiniPlaceholders").isPresent()) {
             new SRMiniPlaceholdersAPIExpansion<>(
+                    adapter,
                     audience -> audience instanceof Player,
-                    wrapper::player,
-                    p -> injector.getSingleton(SkinApplyBukkitAdapter.class).getSkinProperty(p.getAs(Player.class))
+                    wrapper::player
             ).register();
             logger.info("MiniPlaceholders expansion registered!");
         }
