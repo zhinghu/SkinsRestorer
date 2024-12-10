@@ -25,6 +25,8 @@ import net.skinsrestorer.bungee.listeners.AdminInfoListener;
 import net.skinsrestorer.bungee.listeners.LoginListener;
 import net.skinsrestorer.bungee.listeners.ProxyMessageListener;
 import net.skinsrestorer.bungee.wrapper.WrapperBungee;
+import net.skinsrestorer.shared.hooks.SRMiniPlaceholdersAPIExpansion;
+import net.skinsrestorer.shared.log.SRLogger;
 import net.skinsrestorer.shared.plugin.SRPlugin;
 import net.skinsrestorer.shared.plugin.SRProxyPlatformInit;
 import net.skinsrestorer.shared.utils.SRHelpers;
@@ -34,6 +36,7 @@ import javax.inject.Inject;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SRBungeeInit implements SRProxyPlatformInit {
     private final Injector injector;
+    private final SRLogger logger;
     private final SRBungeeAdapter adapter;
     private final SRPlugin plugin;
     private final ProxyServer proxy;
@@ -64,5 +67,17 @@ public class SRBungeeInit implements SRProxyPlatformInit {
     public void initMessageChannel() {
         proxy.registerChannel(SRHelpers.MESSAGE_CHANNEL);
         proxy.getPluginManager().registerListener(adapter.getPluginInstance(), injector.getSingleton(ProxyMessageListener.class));
+    }
+
+    @Override
+    public void placeholderSetupHook() {
+        if (adapter.getPluginInfo("MiniPlaceholders").isPresent()) {
+            new SRMiniPlaceholdersAPIExpansion<>(
+                    audience -> audience instanceof ProxiedPlayer,
+                    wrapper::player,
+                    p -> injector.getSingleton(SkinApplierBungee.class).getSkinProperty(p.getAs(ProxiedPlayer.class))
+            ).register();
+            logger.info("MiniPlaceholders expansion registered!");
+        }
     }
 }

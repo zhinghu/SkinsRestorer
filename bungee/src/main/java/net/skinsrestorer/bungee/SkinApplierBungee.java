@@ -32,6 +32,7 @@ import net.skinsrestorer.shared.utils.ReflectionUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SkinApplierBungee implements SkinApplierAccess<ProxiedPlayer> {
@@ -90,5 +91,9 @@ public class SkinApplierBungee implements SkinApplierAccess<ProxiedPlayer> {
         }
 
         wrapper.player(player).sendToMessageChannel(new SRServerPluginMessage(new SRServerPluginMessage.SkinUpdateChannelPayload(property)));
+    }
+
+    public Optional<SkinProperty> getSkinProperty(ProxiedPlayer player) {
+        return applyAdapter.getSkinProperty(player);
     }
 }
