@@ -35,6 +35,8 @@ setOf("shared", "v1-7", "spigot", "paper", "folia").forEach {
     include("multiver:bukkit:$it")
 }
 
+include("multiver:kyori")
+
 setOf(
     "1-18", "1-18-2",
     "1-19", "1-19-1", "1-19-2", "1-19-3", "1-19-4",

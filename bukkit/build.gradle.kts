@@ -12,8 +12,6 @@ dependencies {
     implementation(projects.multiver.bukkit.v17)
     implementation(projects.multiver.bukkit.folia)
 
-    implementation(libs.adventure.bukkit)
-
     rootProject.subprojects.forEach {
         if (!it.name.startsWith("mc-")) return@forEach
 
@@ -56,9 +54,6 @@ dependencies {
 }
 
 tasks {
-    shadowJar {
-        configureKyoriRelocations()
-    }
     runServer {
         minecraftVersion(libs.versions.runpaperversion.get())
     }

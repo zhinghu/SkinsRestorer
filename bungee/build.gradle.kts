@@ -11,8 +11,6 @@ dependencies {
     implementation(projects.multiver.bungee.propertynew)
     testImplementation(testFixtures(projects.skinsrestorerShared))
 
-    implementation(libs.adventure.bungeecord)
-
     compileOnly("net.md-5:bungeecord-api:1.20-R0.2") {
         isTransitive = false
     }
@@ -23,9 +21,6 @@ dependencies {
 }
 
 tasks {
-    shadowJar {
-        configureKyoriRelocations()
-    }
     runWaterfall {
         version(libs.versions.runwaterfallversion.get())
     }
