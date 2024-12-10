@@ -68,7 +68,7 @@ public class SRVelocityInit implements SRProxyPlatformInit {
 
     @Override
     public void placeholderSetupHook() {
-        if (adapter.getPluginInfo("MiniPlaceholders").isPresent()) {
+        if (adapter.getPluginInfo("miniplaceholders").isPresent()) {
             new SRMiniPlaceholdersAPIExpansion<>(
                     audience -> audience instanceof Player,
                     wrapper::player,
