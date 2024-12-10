@@ -22,5 +22,12 @@ dependencies {
 tasks {
     shadowJar {
         relocate("net.kyori", "net.skinsrestorer.shadow.kyori")
+        dependencies {
+            exclude {
+                it.moduleGroup != "net.kyori"
+                        && it.moduleGroup != "com.github.KyoriPowered.adventure-platform"
+                        && it.moduleGroup != "org.incendo"
+            }
+        }
     }
 }
