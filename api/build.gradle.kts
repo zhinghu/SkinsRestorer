@@ -1,6 +1,5 @@
 plugins {
     id("sr.base-logic")
-    id("net.kyori.indra.publishing")
 }
 
 val repoName = if (version.toString().endsWith("SNAPSHOT")) "maven-snapshots" else "maven-releases"

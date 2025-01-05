@@ -2,9 +2,7 @@ plugins {
     `java-library`
     `java-test-fixtures`
     `maven-publish`
-    signing
     id("sr.formatting-logic")
-    id("net.kyori.indra")
     id("net.kyori.indra.git")
     id("io.freefair.lombok")
 }
@@ -49,59 +47,58 @@ tasks {
     }
 }
 
-indra {
-    github("SkinsRestorer", "SkinsRestorer") {
-        ci(true)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
-
-    gpl3OnlyLicense()
-    publishReleasesTo("codemc-releases", "https://repo.codemc.org/repository/maven-releases/")
-    publishSnapshotsTo("codemc-snapshots", "https://repo.codemc.org/repository/maven-snapshots/")
-
-    configurePublications {
-        pom {
-            name.set("SkinsRestorer")
-            url.set("https://skinsrestorer.net/")
-            organization {
-                name.set("SkinsRestorer")
-                url.set("https://skinsrestorer.net")
-            }
-            developers {
-                developer {
-                    id.set("xknat")
-                    timezone.set("Europe/Amsterdam")
-                    url.set("https://github.com/xknat")
-                }
-                developer {
-                    id.set("AlexProgrammerDE")
-                    timezone.set("Europe/Berlin")
-                    url.set("https://pistonmaster.net")
-                }
-            }
-        }
-
-        versionMapping {
-            usage(Usage.JAVA_API) { fromResolutionOf(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME) }
-            usage(Usage.JAVA_RUNTIME) { fromResolutionResult() }
-        }
-    }
-
-    javaVersions {
-        target(21)
-        strictVersions()
-        testWith(21)
-        minimumToolchain(21)
-    }
+    withJavadocJar()
+    withSourcesJar()
 }
 
-tasks.withType<Sign>().configureEach {
-    onlyIf { false }
-}
-
-tasks {
-    all {
-        if (name == "testJava8") {
-            onlyIf { false }
+publishing {
+    publications {
+        register<MavenPublication>("mavenJava") {
+            from(components["java"])
+            pom {
+                name = "SkinsRestorer"
+                description = rootProject.description
+                url = "https://skinsrestorer.net"
+                organization {
+                    name = "SkinsRestorer"
+                    url = "https://skinsrestorer.net"
+                }
+                developers {
+                    developer {
+                        id = "xknat"
+                        timezone = "Europe/Amsterdam"
+                        url = "https://github.com/xknat"
+                    }
+                    developer {
+                        id = "AlexProgrammerDE"
+                        timezone = "Europe/Berlin"
+                        url = "https://pistonmaster.net"
+                    }
+                }
+                licenses {
+                    license {
+                        name = "GNU General Public License v3.0"
+                        url = "https://www.gnu.org/licenses/gpl-3.0.html"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/SkinsRestorer/SkinsRestorer.git"
+                    developerConnection = "scm:git:ssh://git@github.com/SkinsRestorer/SkinsRestorer.git"
+                    url = "https://github.com/SkinsRestorer/SkinsRestorer"
+                }
+                ciManagement {
+                    system = "GitHub Actions"
+                    url = "https://github.com/SkinsRestorer/SkinsRestorer/actions"
+                }
+                issueManagement {
+                    system = "GitHub"
+                    url = "https://github.com/SkinsRestorer/SkinsRestorer/issues"
+                }
+            }
         }
     }
 }
