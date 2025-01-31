@@ -131,10 +131,7 @@ public record SRVelocityAdapter(Injector injector, SRVelocityBootstrap pluginIns
 
     @Override
     public Optional<SkinProperty> getSkinProperty(SRPlayer player) {
-        List<GameProfile.Property> prop = player.getAs(Player.class).getGameProfileProperties();
-
-        return prop.stream().filter(p -> p.getName().equals(SkinProperty.TEXTURES_NAME))
-                .map(p -> SkinProperty.of(p.getValue(), p.getSignature())).findFirst();
+        return injector.getSingleton(SkinApplierVelocity.class).getSkinProperty(player.getAs(Player.class));
     }
 
     @Override

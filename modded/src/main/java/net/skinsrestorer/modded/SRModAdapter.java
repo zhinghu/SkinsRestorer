@@ -162,8 +162,14 @@ public class SRModAdapter implements SRServerAdapter {
 
     @Override
     public Optional<SkinProperty> getSkinProperty(SRPlayer player) {
-        return player.getAs(ServerPlayer.class).getGameProfile().getProperties().get("textures")
-                .stream().findFirst().map(property -> SkinProperty.of(property.value(), Objects.requireNonNull(property.signature())));
+        return player.getAs(ServerPlayer.class).getGameProfile().getProperties().values().stream()
+                .map(property -> SkinProperty.tryParse(
+                        property.name(),
+                        property.value(),
+                        property.signature()
+                ))
+                .flatMap(Optional::stream)
+                .findFirst();
     }
 
     @Override
