@@ -18,7 +18,7 @@
 package net.skinsrestorer.shared.commands.library.types;
 
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.skinsrestorer.shadow.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.skinsrestorer.shared.commands.library.PlayerSelector;
 import net.skinsrestorer.shared.commands.library.SRMessageException;
 import net.skinsrestorer.shared.plugin.SRPlatformAdapter;

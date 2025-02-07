@@ -41,7 +41,7 @@ public class PlayerJoinListener implements PlayerEvent.PlayerJoin {
         return new SRLoginProfileEvent<>() {
             @Override
             public boolean hasOnlineProperties() {
-                return !player.getGameProfile().getProperties().get("textures").isEmpty();
+                return !player.getGameProfile().getProperties().get(SkinProperty.TEXTURES_NAME).isEmpty();
             }
 
             @Override
