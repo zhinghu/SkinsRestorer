@@ -19,7 +19,7 @@ package net.skinsrestorer.bukkit.wrapper;
 
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
-import net.kyori.adventure.text.Component;
+import net.skinsrestorer.shadow.kyori.adventure.text.Component;
 import net.skinsrestorer.bukkit.SRBukkitAdapter;
 import net.skinsrestorer.shared.subjects.AbstractSRCommandSender;
 import net.skinsrestorer.shared.subjects.messages.ComponentString;

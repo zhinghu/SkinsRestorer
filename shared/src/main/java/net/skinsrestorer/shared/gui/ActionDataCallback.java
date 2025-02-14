@@ -38,9 +38,7 @@ public class ActionDataCallback {
             if (plugin.isProxyMode()) {
                 player.sendToMessageChannel(new SRProxyPluginMessage(new SRProxyPluginMessage.GUIActionChannelPayloadList(action.actionChannelPayload())));
             } else {
-                adapter.runAsync(() -> {
-                    injector.getSingleton(GUIActionListener.class).handle(player, action.actionChannelPayload());
-                });
+                adapter.runAsync(() -> injector.getSingleton(GUIActionListener.class).handle(player, action.actionChannelPayload()));
             }
         }
 

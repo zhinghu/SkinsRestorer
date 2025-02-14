@@ -20,7 +20,7 @@ package net.skinsrestorer.shared.commands.library;
 import ch.jalu.configme.SettingsManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.skinsrestorer.shadow.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.skinsrestorer.api.property.SkinVariant;
 import net.skinsrestorer.shared.commands.library.annotations.*;
 import net.skinsrestorer.shared.commands.library.types.PlayerSelectorArgumentParser;
