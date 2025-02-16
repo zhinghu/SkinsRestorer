@@ -20,11 +20,12 @@ package net.skinsrestorer.shared.commands;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.skinsrestorer.api.PropertyUtils;
 import net.skinsrestorer.api.connections.MineSkinAPI;
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.exception.MineSkinException;
 import net.skinsrestorer.api.property.*;
+import net.skinsrestorer.shadow.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.skinsrestorer.shared.api.SharedSkinApplier;
 import net.skinsrestorer.shared.commands.library.PlayerSelector;
 import net.skinsrestorer.shared.commands.library.SRCommandManager;
@@ -38,6 +39,7 @@ import net.skinsrestorer.shared.log.SRLogLevel;
 import net.skinsrestorer.shared.log.SRLogger;
 import net.skinsrestorer.shared.plugin.SRPlatformAdapter;
 import net.skinsrestorer.shared.plugin.SRPlugin;
+import net.skinsrestorer.shared.storage.HardcodedSkins;
 import net.skinsrestorer.shared.storage.PlayerStorageImpl;
 import net.skinsrestorer.shared.storage.SkinStorageImpl;
 import net.skinsrestorer.shared.storage.model.player.FavouriteData;
@@ -223,6 +225,16 @@ public final class SkinCommand {
         sender.sendMessage(Message.SKIN_SEARCH_MESSAGE, Placeholder.unparsed("search", searchString));
     }
 
+    @Command("edit")
+    @CommandPermission(PermissionRegistry.SKIN_EDIT)
+    @CommandDescription(Message.HELP_SKIN_EDIT)
+    @SRCooldownGroup(COOLDOWN_GROUP_ID)
+    private void onSkinEdit(SRPlayer player) {
+        player.sendMessage(Message.SKIN_EDIT_MESSAGE,
+                Placeholder.parsed("url", "https://minecraft.novaskin.me/?skin=%s".formatted(
+                        PropertyUtils.getSkinTextureUrl(adapter.getSkinProperty(player).orElse(HardcodedSkins.STEVE.getProperty())))));
+    }
+
     @Command("update|refresh")
     @CommandPermission(PermissionRegistry.SKIN_UPDATE)
     @CommandDescription(Message.HELP_SKIN_UPDATE)
@@ -244,7 +256,7 @@ public final class SkinCommand {
                 Optional<SkinIdentifier> currentSkin = targetPlayer.isPresent() ? playerStorage.getSkinIdForPlayer(target, targetPlayer.get().getName())
                         : playerStorage.getSkinIdOfPlayer(target);
                 if (currentSkin.isPresent() && currentSkin.get().getSkinType() == SkinType.PLAYER) {
-                    if (skinStorage.updatePlayerSkinData(UUID.fromString(currentSkin.get().getIdentifier())).isEmpty()) {
+                    if (skinStorage.updatePlayerSkinData(currentSkin.get().getPlayerUniqueId()).isEmpty()) {
                         sender.sendMessage(Message.ERROR_UPDATING_SKIN);
                         return;
                     }
@@ -499,9 +511,9 @@ public final class SkinCommand {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean setSkin(SRCommandSender sender, UUID target, String skinInput, SkinVariant skinVariant, boolean insertHistory) {
-        Optional<Runnable> noPermissionMessage = permissionManager.canSetSkin(sender, skinInput);
+        Optional<Message> noPermissionMessage = permissionManager.canSetSkin(sender, skinInput);
         if (noPermissionMessage.isPresent()) {
-            noPermissionMessage.get().run();
+            sender.sendMessage(noPermissionMessage.get());
             return false;
         }
 

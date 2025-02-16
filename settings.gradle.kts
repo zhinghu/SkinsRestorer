@@ -9,8 +9,8 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.develocity") version "3.18"
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("com.gradle.develocity") version "3.19.1"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
 }
 
 rootProject.name = "skinsrestorer-parent"
@@ -35,11 +35,13 @@ setOf("shared", "v1-7", "spigot", "paper", "folia").forEach {
     include("multiver:bukkit:$it")
 }
 
+include("multiver:kyori")
+
 setOf(
     "1-18", "1-18-2",
     "1-19", "1-19-1", "1-19-2", "1-19-3", "1-19-4",
     "1-20", "1-20-2", "1-20-4", "1-20-5",
-    "1-21"
+    "1-21", "1-21-2", "1-21-4"
 ).forEach {
     include("mappings:mc-$it")
 }

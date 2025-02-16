@@ -20,12 +20,14 @@ package net.skinsrestorer.bukkit.gui;
 import ch.jalu.injector.Injector;
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
 import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
 import com.cryptomorin.xseries.profiles.objects.Profileable;
 import lombok.RequiredArgsConstructor;
 import net.skinsrestorer.bukkit.wrapper.BukkitComponentHelper;
 import net.skinsrestorer.shared.gui.GUIManager;
 import net.skinsrestorer.shared.gui.SRInventory;
+import net.skinsrestorer.shared.log.SRLogger;
 import org.bukkit.Server;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -33,7 +35,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.inject.Inject;
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,6 +42,7 @@ import java.util.Objects;
 public class BukkitGUI implements GUIManager<Inventory> {
     private final Injector injector;
     private final Server server;
+    private final SRLogger logger;
 
     @SuppressWarnings("UnstableApiUsage")
     private ItemStack createItem(SRInventory.Item entry) {
@@ -54,17 +56,13 @@ public class BukkitGUI implements GUIManager<Inventory> {
         };
         ItemStack itemStack = Objects.requireNonNull(material.parseItem());
         entry.textureHash().ifPresent(hash -> {
-            ItemMeta skullMeta = Objects.requireNonNull(itemStack.getItemMeta());
-
             try {
-                Field profileField = Objects.requireNonNull(skullMeta.getClass().getDeclaredField("profile"));
-                profileField.setAccessible(true);
-                profileField.set(skullMeta, Profileable.of(Objects.requireNonNull(ProfileInputType.typeOf(hash)), hash).getProfile());
-            } catch (ReflectiveOperationException e) {
-                throw new RuntimeException(e);
+                XSkull.of(itemStack)
+                        .profile(Profileable.of(Objects.requireNonNull(ProfileInputType.typeOf(hash)), hash))
+                        .apply();
+            } catch (Throwable t) {
+                logger.severe("Failed to set skull texture", t);
             }
-
-            itemStack.setItemMeta(skullMeta);
         });
 
         ItemMeta skullMeta = Objects.requireNonNull(itemStack.getItemMeta());
